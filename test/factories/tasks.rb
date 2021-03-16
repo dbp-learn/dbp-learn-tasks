@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :task do
-    name { 'MyString' }
-    description { 'MyText' }
+    name
+    description
     author_id { 1 }
     assignee_id { 1 }
-    state { 'MyString' }
-    expired_at { '2021-03-16' }
+    traits_for_enum(:state, ['new_task', 'in_development', 'in_qa', 'in_code_review', 'ready_for_release', 'released', 'archived'])
+    expired_at
   end
 end
