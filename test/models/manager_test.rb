@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class ManagerTest < ActiveSupport::TestCase
   # test "the truth" do
