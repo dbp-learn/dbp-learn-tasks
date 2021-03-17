@@ -4,8 +4,7 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  validates :first_name, presence: true, length: { minimum: 2, too_short: '%<count>s characters is the minimum allowed' }
-  validates :last_name, presence: true, length: { minimum: 2, too_short: '%<count>s characters is the minimum allowed' }
-  validates :email, presence: true, uniqueness: { case_sensitive: false },
-                    format: { with: URI::MailTo::EMAIL_REGEXP, message: '%<value>s invalid' }
+  validates :first_name, presence: true, length: { minimum: 2 }
+  validates :last_name, presence: true, length: { minimum: 2 }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
 end
