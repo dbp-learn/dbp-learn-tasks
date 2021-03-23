@@ -25,6 +25,11 @@ gem 'state_machines-activerecord'
 
 gem 'slim-rails'
 
+gem 'kaminari'
+gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'responders'
+gem 'active_model_serializers'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
