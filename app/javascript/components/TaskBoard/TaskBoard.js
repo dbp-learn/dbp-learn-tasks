@@ -10,12 +10,14 @@ import TasksRepository from 'repositories/TasksRepository';
 import ColumnHeader from 'components/ColumnHeader';
 
 import AddPopup from 'components/AddPopup';
+import EditPopup from 'components/EditPopup';
 import TaskForm from 'forms/TaskForm';
 
 import useStyles from './useStyles.js';
 
 const MODES = {
   ADD: 'add',
+  EDIT: 'edit',
   NONE: 'none',
 };
 
@@ -43,6 +45,7 @@ const TaskBoard = () => {
   const [boardCards, setBoardCards] = useState([]);
   const [board, setBoard] = useState(initialBoard);
   const [mode, setMode] = useState(MODES.NONE);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const generateBoard = () => {
     setBoard({
@@ -124,10 +127,32 @@ const TaskBoard = () => {
     });
   };
 
+  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+  };
+
+  const handleTaskDestroy = (task) =>
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+
+  const handleOpenEditPopup = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODES.EDIT);
+  };
+
   return (
     <div>
       <KanbanBoard
-        renderCard={(card) => <Task task={card} />}
+        renderCard={(card) => <Task task={card} onClick={handleOpenEditPopup} />}
         renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
         onCardDragEnd={handleCardDragEnd}
         disableColumnDrag
@@ -138,6 +163,15 @@ const TaskBoard = () => {
         <AddIcon />
       </Fab>
       {mode === MODES.ADD && <AddPopup onCreateCard={handleTaskCreate} onClose={handleClose} />}
+      {mode === MODES.EDIT && (
+        <EditPopup
+          cardId={openedTaskId}
+          onClose={handleClose}
+          onCardDestroy={handleTaskDestroy}
+          onLoadCard={loadTask}
+          onCardUpdate={handleTaskUpdate}
+        />
+      )}
     </div>
   );
 };
