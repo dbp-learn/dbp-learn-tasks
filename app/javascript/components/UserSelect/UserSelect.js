@@ -48,12 +48,20 @@ const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChang
 UserSelect.propTypes = {
   error: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
-  isClearable: PropTypes.bool.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  isRequired: PropTypes.bool.isRequired,
+  isClearable: PropTypes.bool,
+  isDisabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
-  value: UserPresenter.shape().isRequired,
-  helperText: PropTypes.string.isRequired,
+  value: UserPresenter.shape(),
+  helperText: PropTypes.string,
+};
+
+UserSelect.defaultProps = {
+  isClearable: false,
+  isDisabled: false,
+  isRequired: false,
+  value: null,
+  helperText: undefined
 };
 
 export default UserSelect;
