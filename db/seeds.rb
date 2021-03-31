@@ -10,11 +10,35 @@ admin = Admin.find_or_create_by(first_name: 'admin', last_name: 'admin', email: 
 admin.password = 'admin'
 admin.save
 
-60.times do |i|
-  u = [Manager, Developer].sample.new
-  u.email = "email#{i}@mail.gen"
-  u.first_name = "FN#{i}"
+2.times do |i|
+  u = Manager.new
+  u.email = "manageremail#{i}@mail.gen"
+  u.first_name = "manager FN#{i}"
   u.last_name = "LN#{i}"
-  u.password = "#{i}"
+  u.password = i.to_s
   u.save
+end
+
+4.times do |i|
+  u = Developer.new
+  u.email = "devemail#{i}@mail.gen"
+  u.first_name = "devFN#{i}"
+  u.last_name = "LN#{i}"
+  u.password = i.to_s
+  u.save
+end
+
+Developer.find_each do |developer|
+  4.times do |i|
+    t = Task.new
+    t.author = if i % 2 === 0
+                 Manager.first
+               else
+                 Manager.last
+               end
+    t.name = "Test #{i} #{developer.first_name}"
+    t.description = "test #{i} #{developer.first_name}  #{developer.last_name}"
+    t.assignee_id = developer
+    t.save
+  end
 end
