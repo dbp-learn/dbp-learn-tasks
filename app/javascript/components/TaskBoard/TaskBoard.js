@@ -4,6 +4,7 @@ import { propOr } from 'ramda';
 
 import Task from 'components/Task';
 import TasksRepository from 'repositories/TasksRepository';
+import ColumnHeader from 'components/ColumnHeader';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -25,10 +26,19 @@ const initialBoard = {
 };
 
 const TaskBoard = () => {
-  const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
-  useEffect(() => loadBoard(), []);
-  useEffect(() => generateBoard(), [boardCards]);
+  const [board, setBoard] = useState(initialBoard);
+
+  const generateBoard = () => {
+    setBoard({
+      columns: STATES.map(({ key, value }) => ({
+        id: key,
+        title: value,
+        cards: propOr({}, 'cards', boardCards[key]),
+        meta: propOr({}, 'meta', boardCards[key]),
+      })),
+    });
+  };
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -36,6 +46,18 @@ const TaskBoard = () => {
       page,
       perPage,
     });
+
+  const loadColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumn(state, page, perPage).then(({ data }) => {
+      setBoardCards((prevState) => ({
+        ...prevState,
+        [state]: {
+          cards: [...prevState[state].cards, ...data.items],
+          meta: data.meta,
+        },
+      }));
+    });
+  };
 
   const loadColumnInitial = (state, page = 1, perPage = 10) => {
     loadColumn(state, page, perPage).then(({ data }) => {
@@ -46,24 +68,22 @@ const TaskBoard = () => {
     });
   };
 
-  const generateBoard = () => {
-    const board = {
-      columns: STATES.map(({ key, value }) => ({
-        id: key,
-        title: value,
-        cards: propOr({}, 'cards', boardCards[key]),
-        meta: propOr({}, 'meta', boardCards[key]),
-      })),
-    };
-
-    setBoard(board);
-  };
-
   const loadBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
   };
 
-  return <KanbanBoard renderCard={(card) => <Task task={card} />}>{board}</KanbanBoard>;
+  useEffect(() => loadBoard(), []);
+  useEffect(() => generateBoard(), [boardCards]);
+
+  return (
+    <KanbanBoard
+      renderCard={(card) => <Task task={card} />}
+      renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
+      disableColumnDrag
+    >
+      {board}
+    </KanbanBoard>
+  );
 };
 
 export default TaskBoard;
