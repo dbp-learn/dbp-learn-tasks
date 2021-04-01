@@ -10,7 +10,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import TaskPresenter from 'presenters/TaskPresenter';
 
-import useStyles from './useStyles.js';
+import useStyles from './useStyles';
 
 const Task = ({ task, onClick }) => {
   const styles = useStyles();

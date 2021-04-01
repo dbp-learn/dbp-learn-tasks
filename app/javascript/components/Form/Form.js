@@ -41,7 +41,6 @@ const Form = ({ errors, onChange, task }) => {
         label="Author"
         value={TaskPresenter.author(task)}
         onChange={handleChangeSelect('author')}
-        isDisabled
         isRequired
         error={has('author', errors)}
         helperText={errors.author}
@@ -50,7 +49,6 @@ const Form = ({ errors, onChange, task }) => {
         label="Assignee"
         value={TaskPresenter.assignee(task)}
         onChange={handleChangeSelect('assignee')}
-        isDisabled
         isRequired
         error={has('assignee', errors)}
         helperText={errors.author}

@@ -15,7 +15,7 @@ import TaskForm from 'forms/TaskForm';
 
 import TaskPresenter from 'presenters/TaskPresenter';
 
-import useStyles from './useStyles.js';
+import useStyles from './useStyles';
 
 const MODES = {
   ADD: 'add',

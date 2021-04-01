@@ -19,29 +19,27 @@ const UserSelect = ({ error, label, isClearable, isDisabled, isRequired, onChang
     UsersRepository.index({ q: { firstNameOrLastNameCont: inputValue } }).then(({ data }) => data.items);
 
   return (
-    <div>
-      <FormControl margin="dense" disabled={isDisabled} focused={isFocused} error={error} required={isRequired}>
-        <InputLabel shrink>{label}</InputLabel>
-        <div className={styles.select}>
-          <AsyncSelect
-            cacheOptions
-            loadOptions={handleLoadOptions}
-            defaultOptions
-            getOptionLabel={UserPresenter.fullName}
-            getOptionValue={UserPresenter.id}
-            isDisabled={isDisabled}
-            isClearable={isClearable}
-            defaultValue={value}
-            onChange={onChange}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
-            menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-          />
-        </div>
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      </FormControl>
-    </div>
+    <FormControl margin="dense" disabled={isDisabled} focused={isFocused} error={error} required={isRequired}>
+      <InputLabel shrink>{label}</InputLabel>
+      <div className={styles.select}>
+        <AsyncSelect
+          cacheOptions
+          loadOptions={handleLoadOptions}
+          defaultOptions
+          getOptionLabel={UserPresenter.fullName}
+          getOptionValue={UserPresenter.id}
+          isDisabled={isDisabled}
+          isClearable={isClearable}
+          defaultValue={value}
+          onChange={onChange}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          menuPortalTarget={document.body}
+          styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        />
+      </div>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
   );
 };
 
@@ -61,7 +59,7 @@ UserSelect.defaultProps = {
   isDisabled: false,
   isRequired: false,
   value: null,
-  helperText: undefined
+  helperText: undefined,
 };
 
 export default UserSelect;
