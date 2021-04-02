@@ -15,4 +15,6 @@ test:
   port: <% (ENV['CI_NAME'] == 'codeship') ? 5433 : 5432 %>
 
 production:
+  adapter: postgresql
   url: <%= ENV['DATABASE_URL'] %>
+  encoding: unicode
