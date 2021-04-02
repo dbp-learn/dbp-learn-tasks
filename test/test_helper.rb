@@ -6,7 +6,7 @@ if ENV['COVERAGE']
                                                                    SimpleCov::Formatter::HTMLFormatter,
                                                                    Coveralls::SimpleCov::Formatter,
                                                                  ])
-  SimpleCov.start
+  SimpleCov.start 'rails'
 end
 
 ENV['RAILS_ENV'] ||= 'test'
